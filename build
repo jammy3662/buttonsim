@@ -1,0 +1,2 @@
+#!/bin/sh
+g++-10 -I./ main.cpp -o buttons &> log.cpp
