@@ -1,1 +1,2 @@
 # buttonsim
+Button sim is the backend of a larger project designed as a human psychology test cleverly disguised as a simple (yet rewarding and hopefully addictive) button-pressing game. That button pressing game *may or may not* be the backend to an *even larger* project. But I won't reveal that just yet.
