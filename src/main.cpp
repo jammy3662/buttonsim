@@ -24,11 +24,7 @@ int main() {
 	cout << "Button Simulator\n";
 	btn_gen(10);
 	for (int i = 0; i < btns.size(); i += 1) {
-		//cout << btns[i] << "\n";
-	}
-	int &t = &timer(5);
-	while (t != 0) {
-		cout << "timer not over yet";
+		cout << btns[i] << "\n";
 	}
 	return 0;
 }
