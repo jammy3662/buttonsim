@@ -24,7 +24,7 @@ int main() {
 	cout << "Button Simulator\n";
 	btn_gen(10);
 	for (int i = 0; i < btns.size(); i += 1) {
-		cout << btns[i] << "\n";
+		cout << "Button " << i + 1 << ":  " << btns[i] << " %\n";
 	}
 	return 0;
 }
