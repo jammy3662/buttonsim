@@ -2,6 +2,7 @@
 #include <string>
 #include <time.h>
 #include <cmath>
+#include <ctime>
 #include <fstream>
 #include <list>
 #include <vector>

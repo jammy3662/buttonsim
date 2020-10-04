@@ -19,6 +19,29 @@ void btn_gen(int num) {
 	}
 }
 
+void game(double gametime) {
+	double start = (double) time(NULL);
+	int score = 0;
+	cout << "Start pressing buttons! You have " << gametime << " seconds.\n";
+	while ((double) time(NULL) - start < gametime) {
+		int button;
+		cin >> button;
+		int choice = button % 10;
+		int chance = btns[choice];
+		int draw = randr(0,100);
+		if (draw <= chance) {
+			score += 1;
+			cout << "Green hit! Your score increased to " << score << "!  ";
+		} else {
+			cout << "Red hit.  ";
+		}
+	}
+	cout << "Time's up! Your score was " << score << ".\n";
+	cout << "Enter to quit";
+	cin;
+	cout << "\n";
+}
+
 int main() {
 	basic(); // Basic setup
 	cout << "Button Simulator\n";
@@ -26,5 +49,6 @@ int main() {
 	for (int i = 0; i < btns.size(); i += 1) {
 		cout << "Button " << i + 1 << ":  " << btns[i] << " %\n";
 	}
+	game(12);
 	return 0;
 }
