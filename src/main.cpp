@@ -3,6 +3,8 @@ using namespace std;
 
 vector<int> btns;
 
+int main();
+
 double make_btn() {
 	double percent;
 	int luck = 4; // higher values = lower luck
@@ -19,16 +21,31 @@ void btn_gen(int num) {
 	}
 }
 
-void game(double gametime) {
+void game(double gametime, bool debug) {
 	double start = (double) time(NULL);
 	int score = 0;
+	btns = {};
+	btn_gen(10);
+	if (debug) {
+		btns[0] = 100;
+		for (int i = 0; i < btns.size(); i += 1) {
+			cout << "Button " << i + 1 << ":  " << btns[i] << " %\n";
+		}
+	}
 	cout << "Start pressing buttons! You have " << gametime << " seconds.\n";
 	while ((double) time(NULL) - start < gametime) {
 		int button;
 		cin >> button;
-		int choice = button % 10;
-		int chance = btns[choice];
+		if (button < 1 or button > 10) {
+			cout << "\nInvalid button (choose 1-10)\n";
+			continue;
+		}
+		int chance = btns[button - 1];
 		int draw = randr(0,100);
+		if (debug) {
+			cout << "Selected " << button << " with " << chance << "% chance.";
+			cout << " Drew " << draw << "  ";
+		}
 		if (draw <= chance) {
 			score += 1;
 			cout << "Green hit! Your score increased to " << score << "!  ";
@@ -37,18 +54,15 @@ void game(double gametime) {
 		}
 	}
 	cout << "Time's up! Your score was " << score << ".\n";
-	cout << "Enter to quit";
-	cin;
-	cout << "\n";
+	cout << "Continue? [y]  ";
+	string cont;
+	cin >> cont;
+	if (cont == "y") { main(); }
 }
 
 int main() {
 	basic(); // Basic setup
 	cout << "Button Simulator\n";
-	btn_gen(10);
-	for (int i = 0; i < btns.size(); i += 1) {
-		cout << "Button " << i + 1 << ":  " << btns[i] << " %\n";
-	}
-	game(12);
+	game(12, false);
 	return 0;
 }
