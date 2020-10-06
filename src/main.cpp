@@ -37,7 +37,9 @@ void game(double gametime, bool debug) {
 		int button;
 		cin >> button;
 		if (button < 1 or button > 10) {
-			cout << "\nInvalid button (choose 1-10)\n";
+			cin.clear();
+			string dump; cin >> dump;
+			cout << "Invalid button (choose 1-10)  ";
 			continue;
 		}
 		int chance = btns[button - 1];
@@ -53,7 +55,7 @@ void game(double gametime, bool debug) {
 			cout << "Red hit.  ";
 		}
 	}
-	cout << "Time's up! Your score was " << score << ".\n";
+	cout << "\nTime's up! Your score was " << score << ".\n";
 	cout << "Continue? [y]  ";
 	string cont;
 	cin >> cont;
@@ -63,6 +65,6 @@ void game(double gametime, bool debug) {
 int main() {
 	basic(); // Basic setup
 	cout << "Button Simulator\n";
-	game(12, false);
+	game(12, true);
 	return 0;
 }
