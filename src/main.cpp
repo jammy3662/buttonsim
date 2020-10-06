@@ -31,6 +31,7 @@ void game(double gametime, bool debug) {
 		for (int i = 0; i < btns.size(); i += 1) {
 			cout << "Button " << i + 1 << ":  " << btns[i] << " %\n";
 		}
+		cout << RED << "NOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
 	}
 	cout << "Start pressing buttons! You have " << gametime << " seconds.\n";
 	while ((double) time(NULL) - start < gametime) {
