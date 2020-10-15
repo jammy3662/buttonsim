@@ -2,11 +2,7 @@
 #include <string>
 #include <time.h>
 #include <cmath>
-#include <ctime>
 #include <fstream>
-#include <list>
-#include <vector>
-#include <ansi.cpp>
 
 using namespace std;
 
@@ -24,19 +20,11 @@ void file(int mode, char *title, char *text) {
 	
 }
 
-int timer(double dur) {
-	double start = (double) clock();
-	bool running = true;
-	while (running) {
-		double time = (double) clock();
-		double elapsed = time - start;
-		//cout << elapsed << "\n";
-		if (elapsed > dur * 1000) {
-			running = false;
-			return 0;
-		}
-	}
-	return 1;
+bool* timer(time_t length, time_t begin) {
+	
+	bool* done;
+	*done = false;
+	return done;
 }
 
 void basic() {
