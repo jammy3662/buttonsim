@@ -38,7 +38,7 @@ void game(double gametime, bool debug) {
 		cout << RED << "NOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
 	}
 	cout << "Start pressing buttons! You have " << gametime << " seconds.\n";
-	while (time(NULL) - start < gametime) {
+	while (!timer(start, (time_t) gametime)) {
 		int button;
 		cin >> button;
 		if ((int)button < 1 or (int)button > 10) {

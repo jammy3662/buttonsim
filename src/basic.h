@@ -20,16 +20,15 @@ void file(int mode, char *title, char *text) {
 	
 }
 
-bool* timer(time_t length, time_t begin) {
-	
-	bool* done;
-	*done = false;
+bool timer(time_t begin, time_t length) {
+	bool done = false;
+	done = time(NULL) - begin > length;
 	return done;
 }
 
 void basic() {
 	// Basic operations
-	srand(clock()); // Set the rng seed using the system clock
+	srand(time(NULL)); // Set the rng seed using the system clock
 }
 
 int randr(int min, int max) {
