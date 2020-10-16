@@ -1,3 +1,0 @@
-#!/bin/sh
-g++-10 -I./ -I./src src/main.cpp -o bin/buttons &> ./log.cpp
-./bin/buttons
