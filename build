@@ -1,2 +1,12 @@
 #!/bin/sh
-g++-10 -I./ -I./src src/main.cpp -o bin/buttons &> ./log.cpp
+g++-10 -I./src -I/usr/local/include/SDL2 -lSDL2 src/main.cpp -o bin/buttons &> ./log.cpp
+for a in $@; do
+    if [ "$a" = "run" ]; then
+        ./bin/buttons
+    fi
+    if [ "$a" = "commit" ]; then
+        git add .
+        git commit
+        git push -u origin master >&-
+    fi
+done

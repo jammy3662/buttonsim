@@ -1,5 +1,6 @@
 #include <ansi.h>
 #include <basic.h>
+#include <winsdl.h>
 #include <unistd.h>
 using namespace std;
 
