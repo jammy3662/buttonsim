@@ -1,6 +1,6 @@
 #include <ansi.h>
 #include <basic.h>
-#include <winsdl.h>
+#include <zsdl.h>
 #include <unistd.h>
 using namespace std;
 
@@ -27,31 +27,38 @@ void btn_gen(uint8_t num) {
 	}
 }
 
-void game(double gametime, bool debug) {
+void game(double gametime, bool debug, bool verbose) {
 	time_t start = time(NULL);
 	uint8_t score = 0;
 	btn_gen(10);
 	if (debug) {
 		*(btns) = (uint8_t) 100;
 		for (uint8_t i = 0; i < btn_count; i += 1) {
-			cout << "Button " << i + 1 << ":  " << (int) *(btns + i) << " %\n";
+			string post;
+			if (i % 2 == 1) {
+				post = "%\n";
+			} else {
+				post = "%    ";
+			}
+			cout << "Button " << i + 1 << ":  " << (int) *(btns + i) << post;
 		}
-		cout << RED << "NOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
+		cout << RED << "\nNOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
 	}
-	cout << "Start pressing buttons! You have " << gametime << " seconds.\n";
-	while (!timer(start, (time_t) gametime)) {
-		int button;
-		cin >> button;
-		if ((int)button < 1 or (int)button > 10) {
+	cout << "Start pressing buttons! You have " << gametime << " seconds.  ";
+	while (timer(start, (time_t) gametime)) {
+		char* choice = (char*) malloc(2);
+		cin >> *choice;
+		int num = atoi(choice);
+		cout << "\n" << choice << "  " << num << "\n";
+		if (!(num > 1 && num < 10)) {
 			cin.clear();
-			string dump; cin >> dump;
 			cout << "Invalid button (choose 1-10)  ";
 			continue;
 		}
-		uint8_t chance = *(btns + (button - 1));
+		uint8_t chance = *(btns + (num - 1));
 		uint8_t draw = (uint8_t)randr(1,100);
-		if (debug) {
-			cout << "Selected " << button << " with " << (int) chance << "% chance.";
+		if (verbose) {
+			cout << "Selected " << num << " with " << (int) chance << "% chance.";
 			cout << " Drew " << (int) draw << "  ";
 		}
 		if (draw <= chance) {
@@ -71,6 +78,6 @@ void game(double gametime, bool debug) {
 int main() {
 	basic(); // Basic setup
 	cout << "Button Simulator\nCurrent process id:  " << getpid() << "\n";
-	game(20, true);
+	game(20, true, false);
 	return 0;
 }

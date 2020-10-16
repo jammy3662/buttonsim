@@ -21,9 +21,9 @@ void file(int mode, char *title, char *text) {
 }
 
 bool timer(time_t begin, time_t length) {
-	bool done = false;
-	done = time(NULL) - begin > length;
-	return done;
+	bool running = true;
+	running = time(NULL) - begin < length;
+	return running;
 }
 
 void basic() {
