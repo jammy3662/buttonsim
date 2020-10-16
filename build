@@ -18,7 +18,7 @@ for a in $@; do
 	if [ "$a" = "help" ]; then
 		help="1"
 	fi
-	if [ "$a" = "fast" ]; then
+	if [ "$a" = "fancy" ]; then
 		fastbuild="1"
 	fi
 done
@@ -31,10 +31,10 @@ if [ "$verbose" = "0" ]; then
 if [ "verbose" = "1" ]; then
 	$command; fi
 if [ "verbose" = "2" ]; then
-	$command
-	@command &> ./"$out"
+	$command;
+	$command &> ./"$out"
 fi
-if [ "$fastbuild" = "0" ]; then
+if [ "$fastbuild" = "1" ]; then
 	log=$(cat "$out")
 	if [ "$log" = "" ]; then
 		rm "$out"
