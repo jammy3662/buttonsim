@@ -1,8 +1,6 @@
 #!/bin/sh
 name="buttons"
-fastbuild="0"
 command="g++-10 -I./src -I/usr/local/include/SDL2 src/main.cpp -o bin/$name"
-out="glog.txt"
 verbose="0"
 help="0"
 for a in $@; do
@@ -18,32 +16,18 @@ for a in $@; do
 	if [ "$a" = "help" ]; then
 		help="1"
 	fi
-	if [ "$a" = "fancy" ]; then
-		fastbuild="1"
-	fi
 done
 if [ "$help" = "1" ]; then
 	echo "Options:\n(run) Run binary after building\n(commit) Commit changes to github\n(-v) Show compiler output\n(-vw) Show compiler output and log to file"
 	exit
 fi
 if [ "$verbose" = "0" ]; then
-	$command &> ./"$out"; fi
+	$command &> ./log.txt; fi
 if [ "verbose" = "1" ]; then
 	$command; fi
 if [ "verbose" = "2" ]; then
 	$command;
-	$command &> ./"$out"
-fi
-if [ "$fastbuild" = "1" ]; then
-	log=$(cat "$out")
-	if [ "$log" = "" ]; then
-		rm "$out"
-		echo "\033[0;32mBuild: no issues\033[0m"
-	else
-		if [ "$verbose" = "0" ]; then
-			echo "\033[0;31mBuild: failed, see '"$out"'\033[0m"
-		fi
-	fi
+	$command &> ./log.txt
 fi
 for a in $@; do
 	if [ "$a" = "run" ]; then
