@@ -48,20 +48,13 @@ void game(double gametime, bool debug, bool verbose) {
 		cout << RED << "\nNOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
 	}
 	cout << "Start pressing buttons! You have " << gametime << " seconds.  ";
-	int line = 0;
 	while (timer(start, (time_t) gametime)) {
-		int num;
-		cin >> num;
-		/*
-		// SET USER INPUT TO NUM
-		return; // Removing this line will cause the invalid button message to repeat infinitely!
-		*/
-		cout << num << NL;
-		line = 0;
-		if (!(num > 1 && num < 10)) {
-			cin.clear();
+		char number[2];
+		cin >> number;
+		int num = atoi(number);
+		if (!(num > 0 && num < 11)) {
 			cout << "Invalid button (choose 1-10)  ";
-			line += 30;
+			cin.clear();
 			continue;
 		}
 		uint8_t chance = *(btns + (num - 1));
@@ -73,23 +66,8 @@ void game(double gametime, bool debug, bool verbose) {
 		if (draw <= chance) {
 			score += 1;
 			cout << "Green hit! Your score increased to " << (int) score << "!  ";
-			bool digit = false;
-			uint8_t lni = 0;
-			float tempscore = score;
-			while (digit == false) {
-				if (tempscore / 10 > 1) {
-					lni += 1;
-				} else {
-					digit = true;
-				}
-			}
-			line += 38 + (int)lni;
 		} else {
 			cout << "Red hit.  ";
-			line += 10;
-		}
-		for (uint8_t i = 0; i < line; i++) {
-			cout << "\b";
 		}
 	}
 	cout << "\nTime's up! Your score was " << (int) score << ".\n";
