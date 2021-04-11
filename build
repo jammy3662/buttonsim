@@ -1,41 +1,13 @@
-#!/bin/sh
-name="buttons"
-command="g++-10 -I./src -I/usr/local/include/SDL2 src/main.cpp -o bin/$name"
-verbose="0"
-help="0"
-for a in $@; do
-	if [ "$a" = "-v" ]; then
-		verbose="1"
-	fi
-	if [ "$a" = "-vw" ]; then
-		verbose="2"
-	fi
-	if [ "$a" = "-wv" ]; then
-		verbose="2"
-	fi
-	if [ "$a" = "help" ]; then
-		help="1"
-	fi
-done
-if [ "$help" = "1" ]; then
-	echo "Options:\n(run) Run binary after building\n(commit) Commit changes to github\n(-v) Show compiler output\n(-vw) Show compiler output and log to file"
-	exit
+#!/bin/bash
+
+output="buttons"
+
+clang++ src/main.cpp -o $output &> err.cc
+RETURN=$?
+
+if [[ "$RETURN" == "0" ]]; then
+	echo "-- Built. --"
+	./$output
+else
+	echo "Compiler errors."
 fi
-if [ "$verbose" = "0" ]; then
-	$command &> ./log.txt; fi
-if [ "verbose" = "1" ]; then
-	$command; fi
-if [ "verbose" = "2" ]; then
-	$command;
-	$command &> ./log.txt
-fi
-for a in $@; do
-	if [ "$a" = "run" ]; then
-		./bin/$name
-	fi
-	if [ "$a" = "commit" ]; then
-		git add .
-		git commit
-		git push -u origin master >&-
-	fi
-done

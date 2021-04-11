@@ -1,90 +1,73 @@
-#include <iostream>
-#include <string>
-#include <ansi.h>
-#include <basic.h>
-#include <zsdl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "ansi.h"
+#include "basic.h"
 #include <unistd.h>
-using namespace std;
 
-uint8_t* btns;
-uint8_t btn_count;
+#define reward 5
 
-int main();
+int* btns;
+int btn_count;
 
-double make_btn() {
+int make_btn() {
 	double percent;
 	int luck = 4; // higher values = lower luck
 	double seed = (double) randr(luck, luck * 100) / 100;
 	double draw = log10(seed / luck);
 	percent = draw * -50;
 	if (percent < 1) {percent = 1;}
-	return percent;
+	return round(percent);
 }
 
-void btn_gen(uint8_t num) {
-	btns = (uint8_t*) malloc(num);
+void btn_gen(int num) {
+	btns = (int*) malloc(num * sizeof(int));
 	btn_count = num;
-	for (uint8_t i = 0; i < num; i += 1) {
-		uint8_t chance = (uint8_t) round(make_btn());
-		*(btns + i) = chance;
+	for (int i = 0; i < num; i++) {
+		btns[i] = make_btn();
 	}
 }
 
-void game(double gametime, bool debug, bool verbose) {
+int game(double gametime, bool debug = false) {
 	time_t start = time(NULL);
-	uint8_t score = 0;
+	int score = 0;
 	btn_gen(10);
 	if (debug) {
-		*(btns) = (uint8_t) 100;
-		for (uint8_t i = 0; i < btn_count; i += 1) {
-			string post;
-			if (i % 2 == 1) {
-				post = "%\n";
-			} else {
-				post = "%    ";
-			}
-			cout << "Button " << i + 1 << ":  " << (int) *(btns + i) << post;
+		btns[0] = 100;
+		for (int i = 0; i < btn_count; i++) {
+			printf("Button %i: %i\n", i + 1, btns[i]);
 		}
-		cout << RED << "\nNOTE: " << END << "Debug is on. To change this, change 'true' in " << GREEN << "game(12, " << BLUE << "true" << GREEN << ")" << END << " to 'false.'\n";
+		printf("\nNOTE: Debug is on.\n");
 	}
-	cout << "Start pressing buttons! You have " << gametime << " seconds.  ";
+	printf("Start pressing buttons! You have %i seconds.  ", (int)(gametime));
+	int valid = true;
 	while (timer(start, (time_t) gametime)) {
-		char number[2];
-		cin >> number;
+		char number[3];
+		fgets(number, 3, stdin);
 		int num = atoi(number);
-		if (!(num > 0 && num < 11)) {
-			cout << "Invalid button (choose 1-10)  ";
-			cin.clear();
+		if (num < 1 || num > 10) {
+			if (valid) printf("Choose 1-%i  ", btn_count);
+			valid = false;
 			continue;
 		}
-		uint8_t chance = *(btns + (num - 1));
-		uint8_t draw = (uint8_t)randr(1,100);
-		if (verbose) {
-			cout << "Selected " << num << " with " << (int) chance << "% chance.";
-			cout << " Drew " << (int) draw << "  ";
-		}
+		valid = true;
+		int chance = btns[num - 1];
+		int draw = randr(1,100);
 		if (draw <= chance) {
-			score += 1;
-			cout << "Green hit! Your score increased to " << (int) score << "!  ";
+			score += reward;
+			printf("Green hit! Your score increased to %i!  ", score);
 		} else {
-			cout << "Red hit.  ";
+			printf("Red hit.  ");
 		}
 	}
-	cout << "\nTime's up! Your score was " << (int) score << ".\n";
-	cout << "Continue? [y]  ";
-	string cont;
-	cin >> cont;
-	if (cont == "y") { main(); }
+	printf("\nTime's up! Your score was %i.\n", score);
+	return score;
 }
 
-sdlwindow display() {
-	sdlwindow window;
-	return window;
-}
-
-int main() {
+int main(int argc, char** argv) {
 	srand(time(NULL)); // Seed rng with system clock
-	cout << "Button Simulator\nCurrent process id:  " << getpid() << NL;
-	game(20, true, false);
-	return 0;
+	printf("Button Simulator\n");
+	bool debug = false;
+	if (argv[1] != NULL) debug = true;
+	return game(12, debug);
 }
